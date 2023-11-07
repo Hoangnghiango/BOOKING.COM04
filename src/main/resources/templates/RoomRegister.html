@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Rooms</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" th:href="@{/images/logo.png}">
+    <style>
+        body {
+            font-family:"Times New Roman";
+        }
+
+        .navbar {
+            overflow: hidden;
+            background-color: #3399FF;
+            width: 100%;
+            height: 50px;
+        }
+
+        .navbar a {
+            float: left;
+            font-size: 16px;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .dropdown {
+            float: left;
+            overflow: hidden;
+        }
+
+        .dropdown .drop-btn {
+            font-size: 16px;
+            border: none;
+            outline: none;
+            color: white;
+            padding: 14px 16px;
+            background-color: inherit;
+            font-family: inherit;
+            margin: 0;
+        }
+
+        .navbar a:hover, .dropdown:hover .drop-btn {
+            background-color: red;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            float: none;
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: inline-block;
+            width: 120px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .custom-button {
+            padding: 10px 20px;
+            background-color: #337ab7;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .custom-button:hover {
+            background-color: #286090;
+        }
+
+        hr {
+            margin: 40px 0;
+            border: none;
+            border-top: 1px solid #ccc;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .form-inline {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: inline-block;
+            width: 120px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .custom-button {
+            padding: 10px 20px;
+            background-color: #337ab7;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            position: -ms-device-fixed;
+        }
+
+        .custom-button:hover {
+            background-color: #286090;
+        }
+        button {
+            font-size: 20px;
+            background-color: #003b95;
+            border-radius: 4px;
+            font-family: "Times New Roman";
+            width: 130px;
+            height: 40px;
+        }
+        th {
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Thêm thông tin phòng tại chổ nghỉ <span th:text="${accommodation.name}"></span> </h2>
+    <form action="#" th:action="@{/rooms/create/{accId}(accId=${accommodation.getId()})}" th:object="${roomDTO}" method="post"
+          class="form-inline">
+        <div class="form-group mr-2">
+            <label for="accId">ID</label>
+            <input type="number" name="accId" id="accId" class="form-control"
+                   th:placeholder="${accommodation.id}" th:disabled="true">
+        </div>
+        <div class="form-group mr-2">
+            <label for="type">Loại phòng</label>
+            <input type="text" name="roomType" id="type" class="form-control" th:field="*{room_Type}" required>
+            <span class="red" th:if="${#fields.hasErrors('room_Type')}"
+                  th:errors="*{room_Type}"></span>
+        </div>
+        <div class="form-group mr-2">
+            <label for="name">Tên phòng </label>
+            <input type="text" name="roomName" id="name" class="form-control" th:field="*{room_name}" required>
+            <span class="red" th:if="${#fields.hasErrors('room_name')}"
+                  th:errors="*{room_name}"></span>
+        </div>
+        <div class="form-group mr-2">
+            <label for="text">Thông tin giường</label>
+            <input type="text" name="bedInfo" id="text" class="form-control" th:field="*{bed_infor}" required>
+            <span class="red" th:if="${#fields.hasErrors('bed_infor')}"
+                  th:errors="*{bed_infor}"></span>
+        </div>
+        <div class="form-group mr-2">
+            <label for="img01">Thêm hình ảnh</label>
+            <input type="file" name="img01" id="img01" class="form-control" th:field="*{img_path01}" required>
+            <span class="red" th:if="${#fields.hasErrors('img_path01')}"
+                  th:errors="*{img_path01}"></span>
+        </div>
+        <div class="form-group mr-2">
+            <label for="img02">Thêm hình ảnh</label>
+            <input type="file" name="img02" id="img02" class="form-control" th:field="*{img_path02}" required>
+            <span class="red" th:if="${#fields.hasErrors('img_path02')}"
+                  th:errors="*{img_path02}"></span>
+        </div>
+        <div class="form-group mr-2">
+            <label for="img03">Thêm hình ảnh</label>
+            <input type="file" name="img03" id="img03" class="form-control" th:field="*{img_path03}" required>
+            <span class="red" th:if="${#fields.hasErrors('img_path03')}"
+                  th:errors="*{img_path03}"></span>
+        </div>
+        <div class="form-group mr-2">
+            <label for="price">Giá</label>
+            <input type="number" name="price" id="price" class="form-control" th:field="*{price}" required>
+            <span class="red" th:if="${#fields.hasErrors('price')}"
+                  th:errors="*{price}"></span>
+        </div>
+        <div class="form-group mr-2">
+            <label for="quantity">Số lượng</label>
+            <input type="number" name="quantity" id="quantity" class="form-control" th:field="*{quantity}" required>
+            <span class="red" th:if="${#fields.hasErrors('quantity')}"
+                  th:errors="*{quantity}"></span>
+        </div>
+        <div class="form-group mr-2">
+            <label for="maxPerson">Phòng dành cho tối đa </label>
+            <input type="number" name="maxPerson" id="maxPerson" class="form-control" th:field="*{MAXPERSON}" required>
+            <span class="red" th:if="${#fields.hasErrors('MAXPERSON')}"
+                  th:errors="*{MAXPERSON}"></span>
+        </div>
+        <div class="form-group mr-2">
+            <label></label>
+            <button type="submit" class="custom-button btn btn-primary flex-end">Tạo phòng</button>
+        </div>
+    </form>
+    <hr>
+</div>
+<!--<%&#45;&#45;<div class="container-fluid jumbotron" style="display: flex; margin-top: 30px;margin-bottom: 40px">&#45;&#45;%>-->
+<!--    <%&#45;&#45;    <div style="width: 50%;"></div>&#45;&#45;%>-->
+<!--    <%&#45;&#45;    <div style="width: 25%;background-color:#003b95;color: #fff;border:1px solid #003b95 ;display: flex;flex-direction: column;padding: 20px 20px 20px 20px;">&#45;&#45;%>-->
+<!--        <%&#45;&#45;        <div style="font-size: 30px">Cập nhật lịch</div>&#45;&#45;%>-->
+<!--        <%&#45;&#45;        <div>Đặt phòng Quý vị nhận được có hiệu lực ngay lập tức. Hãy cập nhận lịch để tránh bị quá tải đặt phòng.&#45;&#45;%>-->
+<!--            <%&#45;&#45;        </div>&#45;&#45;%>-->
+<!--        <%&#45;&#45;        <hr>&#45;&#45;%>-->
+<!--        <%&#45;&#45;        <a href="" ><button style="color:#fff">Cập nhật lịch</button></a>&#45;&#45;%>-->
+<!--        <%&#45;&#45;    </div>&#45;&#45;%>-->
+<!--    <%&#45;&#45;</div>&#45;&#45;%>-->
+<div class="container-fluid jumbotron">
+    <h2 style ="text-align: center">Danh sách phòng hiện có </h2>
+    <table style="width: 100%;">
+        <tr>
+            <th>Id</th>
+            <th>TYPE</th>
+            <th>NAME</th>
+            <th>BED</th>
+            <th>IMG 01</th>
+            <th>IMG 02</th>
+            <th>IMG 03</th>
+            <th>PRICE</th>
+            <th>QUANTITY</th>
+            <th>PERSON</th>
+            <th>ACTION</th>
+
+        </tr>
+        <tr th:each="room:${roomList}">
+                <td th:text="${room.id}"/></td>
+                <td th:text="${room.room_Type}"/></td>
+                <td th:text="${room.room_name}"/></td>
+                <td th:text="${room.bed_infor}"/></td>
+<!--            th:src="${car.url}"-->
+                <td><img height="100px" width="200px" th:src="@{/images/{imageName}(imageName=${room.img_path01})}"/></td>
+                <td><img height="100px" width="200px" th:src="@{/images/{imageName}(imageName=${room.img_path02})}"/></td>
+                <td><img height="100px" width="200px" th:src="@{/images/{imageName}(imageName=${room.img_path03})}"/></td>
+
+                <td th:text="${room.price}"/></td>
+                <td th:text="${room.quantity}"/></td>
+                <td th:text="${room.MAXPERSON}"/></td>
+
+                <td style ="display: flex;flex-direction: column;">
+<!--                     th:href="@{/room/detail/{id}(id=${room.getId()})}"-->
+                    <a th:href="@{/rooms/edit/{roomId}(roomId=${room.getId()})}"><button>Edit</button></a>
+                    <br>
+                    <a th:href="@{/rooms/delete/{roomId}(roomId=${room.id})}"><button class="btn btn-danger w-100">Delete</button></a>
+                    <br>
+                    <a th:href="@{/roomDates/create/{roomId}(roomId=${room.id})}"><button class="btn btn-danger w-100">Set Lịch</button></a>
+                    <br>
+                </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
+
+

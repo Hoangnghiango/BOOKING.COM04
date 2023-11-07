@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rooms</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="/images/logo.png">
+    <style>
+        body {
+            font-family:"Times New Roman";
+        }
+
+        .navbar {
+            overflow: hidden;
+            background-color: #3399FF;
+            width: 100%;
+            height: 50px;
+        }
+
+        .navbar a {
+            float: left;
+            font-size: 16px;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .dropdown {
+            float: left;
+            overflow: hidden;
+        }
+
+        .dropdown .drop-btn {
+            font-size: 16px;
+            border: none;
+            outline: none;
+            color: white;
+            padding: 14px 16px;
+            background-color: inherit;
+            font-family: inherit;
+            margin: 0;
+        }
+
+        .navbar a:hover, .dropdown:hover .drop-btn {
+            background-color: red;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            float: none;
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: inline-block;
+            width: 120px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .custom-button {
+            padding: 10px 20px;
+            background-color: #337ab7;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .custom-button:hover {
+            background-color: #286090;
+        }
+
+        hr {
+            margin: 40px 0;
+            border: none;
+            border-top: 1px solid #ccc;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .form-inline {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: inline-block;
+            width: 120px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .custom-button {
+            padding: 10px 20px;
+            background-color: #337ab7;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            position: -ms-device-fixed;
+        }
+
+        .custom-button:hover {
+            background-color: #286090;
+        }
+        button {
+            font-size: 20px;
+            background-color: #003b95;
+            border-radius: 4px;
+            font-family: "Times New Roman";
+            width: 130px;
+            height: 40px;
+        }
+        th {
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Thêm thông tin phòng tại chổ nghỉ  ${accommodation.accommodation_name} </h2>
+    <form action="/rooms?action=edit&roomId=${room.id}" method="post" class="form-inline">
+        <div class="form-group mr-2">
+            <label for="accId">ID</label>
+            <input type="number" name="accId" id="accId" class="form-control" value="${accommodation.id}">
+        </div>
+        <div class="form-group mr-2">
+            <label for="type">Loại phòng</label>
+            <input type="text" name="roomType" id="type" class="form-control"  value="<c:out value='${room.roomType}'/>" />
+        </div>
+        <div class="form-group mr-2">
+            <label for="name">Tên phòng </label>
+            <input type="text" name="roomName" id="name" class="form-control" value="<c:out value='${room.room_name}'/>" />
+        </div>
+        <div class="form-group mr-2">
+            <label for="text">Thông tin giường</label>
+            <input type="text" name="bedInfo" id="text" class="form-control" value="<c:out value='${room.bed_info}'/>" />
+        </div>
+        <div class="form-group mr-2">
+            <label for="img01">Thêm hình ảnh</label>
+            <input type="file" name="img01" id="img01" class="form-control" value="<c:out value='${room.img01}'/>" />
+        </div>
+        <div class="form-group mr-2">
+            <label for="img02">Thêm hình ảnh</label>
+            <input type="file" name="img02" id="img02" class="form-control" value="<c:out value='${room.img02}'/>" />
+        </div>
+        <div class="form-group mr-2">
+            <label for="img03">Thêm hình ảnh</label>
+            <input type="file" name="img03" id="img03" class="form-control" value="<c:out value='${room.img03}'/>" />
+        </div>
+        <div class="form-group mr-2">
+            <label for="price">Giá</label>
+            <input type="number" name="price" id="price" class="form-control" value="<c:out value='${room.price}'/>" />
+        </div>
+        <div class="form-group mr-2">
+            <label for="quantity">Số lượng</label>
+            <input type="number" name="quantity" id="quantity" class="form-control" value="<c:out value='${room.quantity}'/>" />
+        </div>
+        <div class="form-group mr-2">
+            <label for="maxPerson">Phòng dành cho tối đa </label>
+            <input type="number" name="maxPerson" id="maxPerson" class="form-control" value="<c:out value='${room.maxPerson}'/>" />
+        </div>
+        <div class="form-group mr-2">
+            <label></label>
+            <button type="submit" class="custom-button btn btn-primary flex-end">Cập nhật thông tin phòng</button>
+        </div>
+    </form>
+    <hr>
+</div>
+<div class="container-fluid jumbotron" style="display: flex; margin-top: 50px">
+    <div style="width: 50%;"></div>
+    <div style="width: 25%;background-color:#003b95;color: #fff;border:1px solid #003b95 ;display: flex;flex-direction: column;padding: 20px 20px 20px 20px;">
+        <div style="font-size: 30px">Cập nhật lịch</div>
+        <div>Đặt phòng Quý vị nhận được có hiệu lực ngay lập tức. Hãy cập nhận lịch để tránh bị quá tải đặt phòng.
+        </div>
+        <hr>
+        <button href="view/calendar.jsp" style="color:#fff">Cập nhật lịch</button>
+    </div>
+</div>
+<div class="container-fluid jumbotron">
+    <h2 style ="text-align: center">Danh sách phòng hiện có </h2>
+    <table style="width: 100%;">
+        <tr>
+            <th>Id</th>
+            <th>TYPE</th>
+            <th>NAME</th>
+            <th>BED</th>
+            <th>IMG 01</th>
+            <th>IMG 02</th>
+            <th>IMG 03</th>
+            <th>PRICE</th>
+            <th>QUANTITY</th>
+            <th>PERSON</th>
+            <th>ACTION</th>
+
+        </tr>
+        <c:forEach var="room" items="${roomList}">
+            <tr>
+                <td><c:out value="${room.id}"/></td>
+                <td><c:out value="${room.roomType}"/></td>
+                <td><c:out value="${room.room_name}"/></td>
+                <td><c:out value="${room.bed_info}"/></td>
+                <td><img height="100px" width="200px" src="images/<c:out value="${room.img01}"/>"/></td>
+                <td><img height="100px" width="200px" src="images/<c:out value="${room.img02}"/>"/></td>
+                <td><img height="100px" width="200px" src="images/<c:out value="${room.img03}"/>"/></td>
+                <td><c:out value="${room.price}"/></td>
+                <td><c:out value="${room.quantity}"/></td>
+                <td><c:out value="${room.maxPerson}"/></td>
+
+                <td style ="display: flex;flex-direction: column;">
+                    <a href="/rooms?action=edit&roomId=${room.id}"><button>Edit</button></a>
+                    <br>
+                    <a href="/rooms?action=delete&accId=${room.id}"><button class="btn btn-danger w-100">Delete</button></a>
+                    <a href="/rooms?action=view&roomId=${room.id}"><button class="btn btn-danger w-100">Detail Room</button></a>
+                    <br>
+                    <a href="/roomDates?action=create&roomId=${room.id}"><button class="btn btn-danger w-100">Set Lịch</button></a>
+                    <br>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
+</div>
+
+</body>
+</html>
+
+
+

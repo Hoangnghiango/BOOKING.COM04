@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+
+    <title>Create Accommodation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" th:href="@{/images/logo.png}">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .navbar {
+            overflow: hidden;
+            background-color: #3399FF;
+            width: 100%;
+            height: 50px;
+        }
+
+        .navbar a {
+            float: left;
+            font-size: 16px;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .dropdown {
+            float: left;
+            overflow: hidden;
+        }
+
+        .dropdown .drop-btn {
+            font-size: 16px;
+            border: none;
+            outline: none;
+            color: white;
+            padding: 14px 16px;
+            background-color: inherit;
+            font-family: inherit;
+            margin: 0;
+        }
+
+        .navbar a:hover, .dropdown:hover .drop-btn {
+            background-color: red;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            float: none;
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: inline-block;
+            width: 120px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .custom-button {
+            padding: 10px 20px;
+            background-color: #337ab7;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .custom-button:hover {
+            background-color: #286090;
+        }
+
+        hr {
+            margin: 40px 0;
+            border: none;
+            border-top: 1px solid #ccc;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .form-inline {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: inline-block;
+            width: 120px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .custom-button {
+            padding: 10px 20px;
+            background-color: #337ab7;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            position: -ms-device-fixed;
+        }
+
+        .custom-button:hover {
+            background-color: #286090;
+        }
+        button {
+            font-size: 20px;
+            background-color: #003b95;
+            border-radius: 4px;
+            font-family: "Times New Roman";
+            width: 130px;
+            height: 50px;
+        }
+        th {
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+<div th:if="${success}" th:inline="javascript">
+    <script>
+        // Display the modal using JavaScript
+        window.onload = function() {
+            document.getElementById('successModal').style.display = 'block';
+        }
+    </script>
+</div>
+
+<!-- Modal HTML -->
+<div id="successModal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <p>Success! Your operation was successful.</p>
+    </div>
+</div>
+
+<div class="container">
+
+    <h1>Welcome, <span th:text="${currentUser.username}"></span>!</h1>
+    <h2>Tạo chổ nghỉ để kinh doanh với chúng tôi ngay lập tức</h2>
+    <div th:if="${param.success}">
+        <div class="alert alert-info">
+            Hí hí tạo thêm mới chỗ nghỉ <span th:text="${param.accnew}"></span> thành công gòi nè !!
+        </div>
+    </div>
+    <form action="#" th:action="@{/accommodation}" th:object="${accommodationDTO}" method="post"  class="form-inline">
+        <div class="form-group mr-2">
+            <label for="productName">Nhập tên chỗ nghỉ của Quý Vị</label>
+            <input type="text" name="name" id="productName" class="form-control" th:field="*{name}" required>
+            <span class="red" th:if="${#fields.hasErrors('name')}"
+                  th:errors="*{name}"></span>
+        </div>
+        <div class="form-group mr-2">
+            <label for="quantity">Loại chỗ nghỉ </label>
+            <input type="text" name="type" id="quantity" class="form-control" th:field="*{type}" required>
+            <span class="red" th:if="${#fields.hasErrors('type')}"
+                  th:errors="*{type}"></span>
+        </div>
+        <div class="form-group mr-2">
+            <label for="unitPriceOfProduct">Hạng Sao</label>
+            <input type="number" name="star" id="unitPriceOfProduct" class="form-control" th:field="*{star}" required>
+            <span class="red" th:if="${#fields.hasErrors('star')}"
+                  th:errors="*{star}"></span>
+        </div>
+        <div class="form-group mr-2">
+            <label for="manufactureDate">Mô tả gây ấn tượng</label>
+            <input type="text" name="description" id="manufactureDate" class="form-control" th:field="*{description}" required>
+            <span class="red" th:if="${#fields.hasErrors('description')}"
+                  th:errors="*{description}"></span>
+        </div>
+        <div class="form-group mr-2">
+            <label for="expirationDate">Địa chỉ</label>
+            <input type="text" name="address" id="expirationDate" class="form-control" th:field="*{address}" required>
+            <span class="red" th:if="${#fields.hasErrors('address')}"
+                  th:errors="*{address}"></span>
+        </div>
+        <div class="form-group mr-2">
+            <label for="unit">Thành Phố</label>
+            <input type="text" name="city" id="unit" class="form-control" th:field="*{city}" required>
+            <span class="red" th:if="${#fields.hasErrors('city')}"
+                  th:errors="*{city}"></span>
+        </div>
+        <div class="form-group mr-2">
+            <label for="importDate">Quốc Gia</label>
+            <input type="text" name="country" id="importDate" class="form-control" th:field="*{country}" required>
+            <span class="red" th:if="${#fields.hasErrors('country')}"
+                  th:errors="*{country}"></span>
+        </div>
+        <div class="form-group mr-2">
+            <label></label>
+        </div>
+        <div class="form-group mr-2">
+            <label></label>
+            <button type="submit" class="custom-button btn btn-primary flex-end">Thêm Chỗ Nghỉ</button>
+        </div>
+    </form>
+    <hr>
+    <h2 style ="text-align: center">Danh sách chổ nghỉ của bạn </h2>
+    <table style=" width: 100%;">
+        <tr>
+            <th>Id</th>
+            <th>NAME</th>
+            <th>TYPE</th>
+            <th>STAR</th>
+            <th>DESCRIPTION</th>
+            <th>ADDRESS</th>
+            <th>CITY</th>
+            <th>COUNTRY</th>
+            <th>RATING</th>
+            <th>Options</th>
+
+        </tr>
+        <tr th:each="accommodation : ${accommodationList}">
+                <td th:text="${accommodation.id}"></td>
+                <td th:text="${accommodation.name}"></td>
+                <td th:text="${accommodation.type}"></td>
+                <td th:text="${accommodation.star}"></td>
+                <td th:text="${accommodation.description}"/></td>
+                <td th:text="${accommodation.address}"/></td>
+                <td th:text="${accommodation.city}"/></td>
+                <td th:text="${accommodation.country}"/></td>
+                <td th:text="${accommodation.rating}"/></td>
+                <td style="display: flex;flex-direction: column;">
+                    <a th:href="@{/accommodation/edit/{id}(id=${accommodation.getId()})}"><button>Edit</button></a>
+                    <br>
+                    <a th:href="@{/accommodation/delete/{id}(id=${accommodation.getId()})}"><button>Delete</button></a>
+                    <br>
+                    <a th:href="@{/rooms/create/{accId}(accId=${accommodation.getId()})}"><button>New Room</button></a>
+                </td>
+        </tr>
+    </table>
+<!--    <div>-->
+<!--        <a th:href="@{'/user/list'(page=${userDtos.number - 1})}" th:if="${userDtos.hasPrevious()}">Previous</a>-->
+<!--        <span th:text="${userDtos.number + 1}"></span>/<span th:text="${userDtos.totalPages}"></span>-->
+<!--        <a th:href="@{'/user/list'(page=${userDtos.number + 1})}" th:if="${userDtos.hasNext()}">Next</a>-->
+<!--    </div>-->
+</div>
+<script>
+    // Close the modal when clicking the 'x' button
+    function closeModal() {
+        document.getElementById('successModal').style.display = 'none';
+    }
+</script>
+</body>
+</html>
+
